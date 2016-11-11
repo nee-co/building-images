@@ -1,4 +1,4 @@
-FROM neec.xyz:5000/buildpack-deps:curl
+FROM registry.neec.xyz/neeco/buildpack-deps:curl
 
 RUN apk add --no-cache --virtual .buildpack-deps tar && \
 

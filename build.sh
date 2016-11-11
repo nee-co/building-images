@@ -8,8 +8,7 @@ excluded_dirs() {
       export $1=${i#*/}
       [ -z $3 ] &&
 
-        export name=${IMAGENAME_PREFIX}${name}
-        docker build ${build_opts} --tag neec.xyz:5000/${name}:${tag} . &&
+        docker build ${build_opts} --tag registry.neec.xyz/neeco/${name}:${tag} . &&
           echo -e "Build succeeded: $PWD\n"
 
       ${@:2}
