@@ -8,7 +8,7 @@ excluded_dirs() {
       export $1=${i#*/}
       [ -z $3 ] &&
 
-        export imagename="${IMAGENAME_PREFIX}${name#*-}:${tag#*-}"
+        export imagename="registry.neec.xyz/neeco/${name#*-}:${tag#*-}"
         docker build ${build_opts} --tag ${imagename} . &&
           docker push ${imagename}
 
@@ -20,6 +20,6 @@ excluded_dirs() {
 excluded_dirs name excluded_dirs tag
 
 for i in aldea caja cadena cuenta dios kong puerta
-  do docker build git@bitbucket.org:nhac/$i.git -t ${IMAGENAME_PREFIX}$i:latest &&
-     docker push ${IMAGENAME_PREFIX}$i:latest
+  do docker build git@bitbucket.org:nhac/$i.git -t registry.neec.xyz/neeco/$i:latest &&
+     docker push registry.neec.xyz/neeco/$i:latest
 done
