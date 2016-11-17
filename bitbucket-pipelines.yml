@@ -1,0 +1,6 @@
+image: 5003/centos-ansible-ci:2.1.x
+pipelines:
+  default:
+    - step:
+        script:
+          - sshpass -p "${PROV_PASS}" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null prov@neec.xyz "source ~/builder-ci/.build.sh"
