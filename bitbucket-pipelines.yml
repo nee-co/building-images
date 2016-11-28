@@ -8,7 +8,7 @@ pipelines:
                test ! -d $1 && git clone git@bitbucket.org:nhac/$1.git $1
                pushd $1 > /dev/null &&
                  git pull &&
-                 . ./build.sh
+                 bash -c ". ./build.sh $1 $2"
                popd > /dev/null
              }
-          - sshpass -p "${PROV_PASS}" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null prov@neec.xyz "$(typeset -f); build_push_image $BITBUCKET_REPO_SLUG"
+          - sshpass -p "${CI_PASS}" ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ci@neec.xyz "$(typeset -f); build_push_image $BITBUCKET_REPO_SLUG BITBUCKET_COMMIT"
