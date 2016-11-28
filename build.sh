@@ -1,5 +1,6 @@
-set -e
-build_opts="$@"
+set -ex
+BITBUCKET_REPO_SLUG="$1"
+BITBUCKET_COMMIT="$2"
 
 excluded_dirs() {
   for i in $(find . -maxdepth 1 -mindepth 1 -not -path *./.* -type d)
@@ -9,7 +10,7 @@ excluded_dirs() {
       [ -z $3 ] &&
 
         export imagename="registry.neec.xyz/neeco/${name#*-}:${tag#*-}"
-        docker build ${build_opts} --tag ${imagename} . &&
+        docker build --tag ${imagename} . &&
           docker push ${imagename}
 
       ${@:2}
@@ -19,7 +20,6 @@ excluded_dirs() {
 
 excluded_dirs name excluded_dirs tag
 
-for i in aldea caja cadena cuenta dios kong puerta
-  do docker build git@bitbucket.org:nhac/$i.git -t registry.neec.xyz/neeco/$i:latest &&
-     docker push registry.neec.xyz/neeco/$i:latest
+for i in latest $BITBUCKET_COMMIT
+  do docker build  --tag registry.neec.xyz/neeco/$BITBUCKET_REPO_SLUG-application:$i git@bitbucket.org:nhac/$BITBUCKET_REPO_SLUG.git
 done
