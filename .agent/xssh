@@ -1,0 +1,22 @@
+BUILDER_REPO=git@bitbucket.org:nhac/building-images.git
+BUILDER_REPO_NAME=${BUILDER_REPO##*/}
+BUILDER_REPO_NAME=${BUILDER_REPO_NAME%.*}
+
+SSHPASS=$CI_PASS
+sshpass -e ssh ci@neec.xyz "
+export IMAGENAME_SUFFIX=registry.neeco.xyz/neeco/
+uname --all
+
+  test ! -d $BUILDER_REPO_NAME && git clone $BUILDER_REPO $BUILDER_REPO_NAME
+  pushd $BUILDER_REPO_NAME > /dev/null &&
+    git pull &&
+    . ./building_immediate_images.sh
+  popd > /dev/null
+
+  if [ ! $BITBUCKET_REPO_SLUG = $BUILDER_REPO_NAME ]
+    then
+    for i in latest $BITBUCKET_COMMIT
+      do docker build --tag ${IMAGENAME_SUFFIX}${BITBUCKET_REPO_SLUG}-application:$i git@bitbucket.org:nhac/${BITBUCKET_REPO_SLUG}.git
+    done
+  fi
+"
