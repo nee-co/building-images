@@ -1,0 +1,1 @@
+. ./building_immediate_images.sh
